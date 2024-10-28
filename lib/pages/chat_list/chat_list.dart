@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fluffychat/config/fcm_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -510,7 +511,9 @@ class ChatListController extends State<ChatList>
   @override
   void initState() {
     _initReceiveSharingIntent();
+    onFgNotification(context);
 
+    handleInitialFcmMessage(context);
     scrollController.addListener(_onScroll);
     _waitForFirstSync();
     _hackyWebRTCFixForWeb();

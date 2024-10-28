@@ -16,3 +16,8 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.core:core:1.6.0'    //This is stable version right now.
+    }
+}

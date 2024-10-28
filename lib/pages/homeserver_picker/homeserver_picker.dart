@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fluffychat/config/fcm_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -192,10 +193,22 @@ class HomeserverPickerController extends State<HomeserverPicker> {
 
   @override
   void initState() {
+   // checkNotification();
     _checkTorBrowser();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(checkHomeserverAction);
   }
+
+
+
+  checkNotification() async {
+    print("checkNotification");
+    onFgNotification(context);
+
+    await handleInitialFcmMessage(context);
+
+  }
+
 
   @override
   Widget build(BuildContext context) => HomeserverPickerView(this);

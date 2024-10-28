@@ -45,6 +45,11 @@
             android:turnScreenOn="true"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
+
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel"
+                android:value="@string/default_notification_channel" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -61,6 +66,7 @@
                    android:scheme="https"
                    android:host="matrix.to"/>
             </intent-filter>
+
             <intent-filter>
                <action android:name="android.intent.action.VIEW" />
                <category android:name="android.intent.category.DEFAULT" />
