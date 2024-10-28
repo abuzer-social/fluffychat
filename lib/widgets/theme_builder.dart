@@ -1,3 +1,4 @@
+import 'package:fluffychat/config/fcm_config.dart';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
@@ -88,6 +89,10 @@ class ThemeController extends State<ThemeBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    // onFgNotification(context);
+    //
+    // handleInitialFcmMessage(context);
+
     return Provider(
       create: (_) => this,
       child: DynamicColorBuilder(

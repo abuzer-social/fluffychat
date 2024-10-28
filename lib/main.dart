@@ -1,3 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fluffychat/config/fcm.dart';
+import 'package:fluffychat/config/fcm_config.dart';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
@@ -12,6 +15,7 @@ import 'package:fluffychat/widgets/error_widget.dart';
 import 'config/setting_keys.dart';
 import 'utils/background_push.dart';
 import 'widgets/fluffy_chat_app.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   Logs().i('Welcome to ${AppConfig.applicationName} <3');
@@ -20,6 +24,7 @@ void main() async {
   // To make sure that the parts of flutter needed are started up already, we need to ensure that the
   // widget bindings are initialized already.
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
 
   Logs().nativeColors = !PlatformInfos.isIOS;
   final store = await SharedPreferences.getInstance();
@@ -28,6 +33,15 @@ void main() async {
   // If the app starts in detached mode, we assume that it is in
   // background fetch mode for processing push notifications. This is
   // currently only supported on Android.
+  await FCMNotifications().getFCMDeviceToken();
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  await checkPermissions();
+  await initAndroidForegroundFcm();
+  await requestDeviceFcmPermissions();
+  await FirebaseMessaging.instance.getInitialMessage();
+
   if (PlatformInfos.isAndroid &&
       AppLifecycleState.detached == WidgetsBinding.instance.lifecycleState) {
     // Do not send online presences when app is in background fetch mode.
@@ -39,6 +53,7 @@ void main() async {
     // In the background fetch mode we do not want to waste ressources with
     // starting the Flutter engine but process incoming push notifications.
     BackgroundPush.clientOnly(clients.first);
+
     // To start the flutter engine afterwards we add an custom observer.
     WidgetsBinding.instance.addObserver(AppStarter(clients, store));
     Logs().i(

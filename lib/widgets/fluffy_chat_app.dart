@@ -1,3 +1,4 @@
+import 'package:fluffychat/config/fcm_config.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -13,7 +14,7 @@ import '../config/app_config.dart';
 import '../utils/custom_scroll_behaviour.dart';
 import 'matrix.dart';
 
-class FluffyChatApp extends StatelessWidget {
+class FluffyChatApp extends StatefulWidget {
   final Widget? testWidget;
   final List<Client> clients;
   final String? pincode;
@@ -37,6 +38,29 @@ class FluffyChatApp extends StatelessWidget {
   static final GoRouter router = GoRouter(routes: AppRoutes.routes);
 
   @override
+  State<FluffyChatApp> createState() => _FluffyChatAppState();
+}
+
+
+class _FluffyChatAppState extends State<FluffyChatApp> {
+
+  @override
+  void initState() {
+    // checkNotification();
+    // TODO: implement initState
+    super.initState();
+  }
+
+
+  checkNotification()  {
+    print("checkNotification");
+      onFgNotification(context);
+
+       handleInitialFcmMessage(context);
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ThemeBuilder(
       builder: (context, themeMode, primaryColor) => MaterialApp.router(
@@ -48,16 +72,16 @@ class FluffyChatApp extends StatelessWidget {
         scrollBehavior: CustomScrollBehavior(),
         localizationsDelegates: L10n.localizationsDelegates,
         supportedLocales: L10n.supportedLocales,
-        routerConfig: router,
+        routerConfig: FluffyChatApp.router,
         builder: (context, child) => AppLockWidget(
-          pincode: pincode,
-          clients: clients,
+          pincode: widget.pincode,
+          clients: widget.clients,
           // Need a navigator above the Matrix widget for
           // displaying dialogs
           child: Matrix(
-            clients: clients,
-            store: store,
-            child: testWidget ?? child,
+            clients: widget.clients,
+            store: widget.store,
+            child: widget.testWidget ?? child,
           ),
         ),
       ),
