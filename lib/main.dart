@@ -35,7 +35,7 @@ void main() async {
   // currently only supported on Android.
   await FCMNotifications().getFCMDeviceToken();
 
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler, );
 
   await checkPermissions();
   await initAndroidForegroundFcm();

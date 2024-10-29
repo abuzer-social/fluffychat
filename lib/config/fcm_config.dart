@@ -24,7 +24,7 @@ const AndroidNotificationChannel androidFcmChannel = AndroidNotificationChannel(
 );
 
 const InitializationSettings foregroundFcmSettings = InitializationSettings(
-  android: AndroidInitializationSettings('app_icon'),
+  android: AndroidInitializationSettings('notifications_icon'),
   iOS: DarwinInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,
@@ -128,33 +128,33 @@ Future<void> onBgNotification(RemoteMessage message) async {
   log("data = $msg");
   log("notification = $msg2");
 
-  //
-  // final InitializationSettings initializationSettings =
-  //     InitializationSettings(android: foregroundFcmSettings.android, iOS: null, macOS: null);
-  //
-  // await foregroundFcmPlugin.initialize(initializationSettings);
-  // const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
-  //   'mychannel',
-  //   'channela',
-  //   channelDescription: 'your channel description',
-  //   importance: Importance.max,
-  //   priority: Priority.high,
-  //   ticker: 'ticker',
-  //   styleInformation: MediaStyleInformation(
-  //     htmlFormatContent: true,
-  //     htmlFormatTitle: true,
-  //   ),
-  // );
-  //
-  // const NotificationDetails platformChannelSpecifics =
-  //     NotificationDetails(android: androidNotificationDetails);
-  // await foregroundFcmPlugin.show(
-  //   0,
-  //   "DummyTest",
-  //   "Description",
-  //   platformChannelSpecifics,
-  //   payload: "My PayLoad",
-  // );
+
+  final InitializationSettings initializationSettings =
+      InitializationSettings(android: foregroundFcmSettings.android, iOS: null, macOS: null);
+
+  await foregroundFcmPlugin.initialize(initializationSettings);
+  const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+    'mychannel',
+    'channela',
+    channelDescription: 'your channel description',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+    styleInformation: MediaStyleInformation(
+      htmlFormatContent: true,
+      htmlFormatTitle: true,
+    ),
+  );
+
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidNotificationDetails);
+  await foregroundFcmPlugin.show(
+    0,
+    "DummyTest",
+    "Description",
+    platformChannelSpecifics,
+    payload: "My PayLoad",
+  );
 }
 
 //HANDLING TAPS
@@ -172,11 +172,6 @@ Future<void> handleNotificationClick(
 ) async {
   try {
     log("onTapBGNotification");
-
-
-
-
-
   } catch (e) {
     log('OnTap Bg notification ${e.toString()}');
   }
